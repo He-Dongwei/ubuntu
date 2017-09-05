@@ -23,7 +23,7 @@ class paper(models.Model):
 #期刊实体
 class journal(models.Model):
     jourName=models.CharField(_('期刊名称'),max_length=30)
-    jourLevel=models.CharField(_('期刊等级'),null=True,choices=(('A',_('A')),('B',_('B')),('C',_('C')),('D',_('D')),('E',_('E'))),max_length=1)#用编码表示
+    jourLevel=models.CharField(_('期刊等级'),null=True,choices=(('A1',_('A1学术期刊')),('A2',_('A2学术期刊')),('B1',_('B1学术期刊')),('B2',_('B2学术期刊')),('C',_('C普通期刊'))),max_length=4)#用编码表示
     jourManager=models.CharField(_('期刊联系人'),max_length=30)
     jourPhone=models.CharField(_('期刊联系手机号'),max_length=11)
     jourOfficePhone=models.CharField(_('期刊办公电话'),max_length=12,null=True)
@@ -34,7 +34,21 @@ class journal(models.Model):
     class Meta:
         verbose_name=_('期刊')
         verbose_name_plural=_('期刊')
-#n-n
+
+#推荐（期刊与论文之间的联系）
+class recommend(models.Model):
+    paper=models.ForeignKey(paper)
+    journal=models.ForeignKey(journal)
+    recommender=models.CharField(_('推荐人'),null=True,max_length=30)
+    recommendTime=models.DateTimeField(_('推荐时间'),null=True)
+    recommendOpinion=models.TextField(_('推荐意见'),null=True)
+    recommendStatus=models.CharField(_('推荐状态'),max_length=1,null=True,choices=(('0',_('强烈推荐')),('1',_('推荐')),('2',_('弱推荐')),('3',_('弱拒绝')),('4',_('拒绝')),('5',_('强烈拒绝'))))
+    def __str__(self):
+        return self.journal.jourName
+    class Meta:
+        verbose_name=_('推荐')
+        verbose_name_plural=_('推荐')
+
 
 #作者实体
 class author(models.Model):
