@@ -8,14 +8,15 @@ from django.contrib.contenttypes.models import ContentType
 
 #论文实体
 class paper(models.Model):
+    paper_Theme=models.CharField(_('论文主题'),max_length=255,null=True)
     paperChineseName=models.CharField(_('论文中文名称'),max_length=255)
     paperEnglishName=models.CharField(_('论文英文名称'),max_length=255)
-    paperChineseSummary=models.CharField(_('论文中文摘要'),max_length=1000)
-    paperEnglishSummary=models.CharField(_('论文英文摘要'),max_length=1000)
+    paperChineseSummary=models.TextField(_('论文中文摘要'))
+    paperEnglishSummary=models.TextField(_('论文英文摘要'))
     paperFiles=models.FileField(_('论文附件'))
     paperStatus=models.CharField(_('论文录用状态'),null=True,max_length=1,choices=(('0',_('已投稿')),('1',_('审稿')),('2',_('已录用')),('3',_('已拒绝'))))
     def __str__(self):
-        return self.paperChineseName
+        return self.paper_Theme
     class Meta:
         verbose_name=_('论文')
         verbose_name_plural=_('论文')
@@ -23,7 +24,7 @@ class paper(models.Model):
 #期刊实体
 class journal(models.Model):
     jourName=models.CharField(_('期刊名称'),max_length=30)
-    jourLevel=models.CharField(_('期刊等级'),null=True,choices=(('A',_('A')),('B',_('B')),('C',_('C')),('D',_('D')),('E',_('E'))),max_length=1)#用编码表示
+    jourLevel=models.CharField(_('期刊等级'),null=True,choices=(('A1',_('A1学术期刊')),('A2',_('A2学术期刊')),('B1',_('B1学术期刊')),('B2',_('B2学术期刊')),('C',_('C普通期刊'))),max_length=4)#用编码表示
     jourManager=models.CharField(_('期刊联系人'),max_length=30)
     jourPhone=models.CharField(_('期刊联系手机号'),max_length=11)
     jourOfficePhone=models.CharField(_('期刊办公电话'),max_length=12,null=True)
